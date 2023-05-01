@@ -89,10 +89,10 @@ function displayLocalStorage(e) {
 	checkUI();
 }
 
-function onItemClick(e) {
+function onItemClick(e) { 
 	if (e.target.classList.contains("fa-xmark")) {
 		removeItem(e.target.parentElement.parentElement);
-	} else {
+	} else if (e.target.tagName === "LI") {
 		setItemToEdit(e.target);
 	}
 }
@@ -102,11 +102,27 @@ function setItemToEdit(item) {
 	itemList.querySelectorAll("li").forEach((i) => {
 		i.classList.remove("edit-mode");
 	});
-
+	addCancelButton(item);
 	item.classList.add("edit-mode");
 	formBtn.innerHTML = "<i class = 'fa-solid fa-pen'></i> Update Item";
 	formBtn.style.backgroundColor = "green";
 	itemInput.value = item.innerText;
+}
+
+function addCancelButton(item) {
+	const btn = document.createElement("button");
+	const text = document.createTextNode("Cancel");
+	const container = document.querySelector(".form-and-cancel-container");
+	btn.className = "cancel-btn";
+	btn.appendChild(text);
+	container.appendChild(btn);
+	btn.item = item;
+	btn.addEventListener("click", cancelEdit)
+}
+
+function cancelEdit(e) {
+	checkUI();
+	e.target.item.classList.remove("edit-mode")
 }
 
 function removeItem(item) {
@@ -156,6 +172,13 @@ function checkUI() {
 	isEditMode = false;
 	formBtn.innerHTML = "<i class='fa-solid fa-plus'></i> Add Item";
 	formBtn.style.backgroundColor = "black";
+
+	const cancelBtn = document.querySelectorAll(".cancel-btn");
+	if (cancelBtn.length > 0) {
+		cancelBtn.forEach(btn => {
+			btn.remove();
+		})
+	}
 }
 
 function createBtn(classes) {
@@ -190,6 +213,7 @@ function filterItems(e) {
 
 // Initialize app
 function init() {
+	// Event Listeners
 	itemForm.addEventListener("submit", onAddItemSubmit);
 	itemList.addEventListener("click", onItemClick);
 	clearBtn.addEventListener("click", removeAllItems);
@@ -198,5 +222,4 @@ function init() {
 
 	checkUI();
 }
-// Event Listeners
 init();
