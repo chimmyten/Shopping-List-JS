@@ -11,6 +11,11 @@ function onAddItemSubmit(e) {
 	e.preventDefault();
 	const newItem = itemInput.value;
 
+	if (checkDupe(newItem)) {
+		alert("This item is already in the list");
+		return;
+	}
+
 	// Validate Input
 	if (newItem === "") {
 		alert("Please enter an item");
@@ -22,15 +27,25 @@ function onAddItemSubmit(e) {
 		removeItem(itemToEdit);
 		isEditMode = false;
 		itemToEdit.classList.remove("edit-mode");
-	} 
+	}
 	// Create item DOM element
 	addItemToDOM(newItem);
 	// Add item to storage
 	addItemToLocalStorage(newItem);
 
 	itemInput.value = "";
-	
+
 	checkUI();
+}
+
+function checkDupe(newItem) {
+	let isDupe = false;
+	itemList.querySelectorAll("li").forEach((i) => {
+		if (i.textContent.toLowerCase() === newItem.toLowerCase()) {
+			isDupe = true;
+		}
+	});
+	return isDupe;
 }
 
 function addItemToDOM(item) {
@@ -128,7 +143,7 @@ function removeAllItems(e) {
 
 function checkUI() {
 	itemInput.value = "";
-	
+
 	const items = itemList.querySelectorAll("li");
 	if (items.length === 0) {
 		clearBtn.style.display = "none";
@@ -139,7 +154,7 @@ function checkUI() {
 	}
 
 	isEditMode = false;
-	formBtn.innerHTML = "<i class='fa-solid fa-plus'></i> Add Item"
+	formBtn.innerHTML = "<i class='fa-solid fa-plus'></i> Add Item";
 	formBtn.style.backgroundColor = "black";
 }
 
