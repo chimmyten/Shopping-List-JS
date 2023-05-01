@@ -3,7 +3,9 @@ const itemInput = document.querySelector("#item-input");
 const itemList = document.getElementById("item-list");
 const clearBtn = document.querySelector(".btn-clear");
 const itemFilter = document.getElementById("filter");
+const formBtn = itemForm.querySelector("button");
 const items = itemList.querySelectorAll("li");
+let isEditMode = false;
 
 function onAddItemSubmit(e) {
 	e.preventDefault();
@@ -13,6 +15,10 @@ function onAddItemSubmit(e) {
 	if (newItem === "") {
 		alert("Please enter an item");
 		return;
+	}
+
+	if (isEditMode === true) {
+		updateItem(newItem);
 	}
 	// Create item DOM element
 	addItemToDOM(newItem);
@@ -67,7 +73,21 @@ function displayLocalStorage(e) {
 function onItemClick(e) {
 	if (e.target.classList.contains("fa-xmark")) {
 		removeItem(e.target.parentElement.parentElement);
+	} else {
+		setItemToEdit(e.target);
 	}
+}
+
+function setItemToEdit(item) {
+	isEditMode = true;
+	itemList.querySelectorAll("li").forEach((i) => {
+		i.classList.remove("edit-mode");
+	});
+
+	item.classList.add("edit-mode");
+	formBtn.innerHTML = "<i class = 'fa-solid fa-pen'></i> Update Item";
+	formBtn.style.backgroundColor = "green";
+	itemInput.value = item.innerText;
 }
 
 function removeItem(item) {
@@ -96,7 +116,7 @@ function removeAllItems(e) {
 	while (itemList.firstChild) {
 		itemList.removeChild(itemList.firstChild);
 	}
-    // Clear from localStorage
+	// Clear from localStorage
 	localStorage.removeItem("items");
 
 	checkUI();
