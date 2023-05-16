@@ -98,11 +98,13 @@ function onItemClick(e) {
 }
 
 function setItemToEdit(item) {
+	if (isEditMode === false){
+		addCancelButton(item);
+	}
 	isEditMode = true;
 	itemList.querySelectorAll("li").forEach((i) => {
 		i.classList.remove("edit-mode");
 	});
-	addCancelButton(item);
 	item.classList.add("edit-mode");
 	formBtn.innerHTML = "<i class = 'fa-solid fa-pen'></i> Update Item";
 	formBtn.style.backgroundColor = "green";
