@@ -89,7 +89,7 @@ function displayLocalStorage(e) {
 	checkUI();
 }
 
-function onItemClick(e) { 
+function onItemClick(e) {
 	if (e.target.classList.contains("fa-xmark")) {
 		removeItem(e.target.parentElement.parentElement);
 	} else if (e.target.tagName === "LI") {
@@ -98,7 +98,7 @@ function onItemClick(e) {
 }
 
 function setItemToEdit(item) {
-	if (isEditMode === false){
+	if (isEditMode === false) {
 		addCancelButton(item);
 	}
 	isEditMode = true;
@@ -119,12 +119,12 @@ function addCancelButton(item) {
 	btn.appendChild(text);
 	container.appendChild(btn);
 	btn.item = item;
-	btn.addEventListener("click", cancelEdit)
+	btn.addEventListener("click", cancelEdit);
 }
 
 function cancelEdit(e) {
 	checkUI();
-	e.target.item.classList.remove("edit-mode")
+	e.target.item.classList.remove("edit-mode");
 }
 
 function removeItem(item) {
@@ -177,9 +177,9 @@ function checkUI() {
 
 	const cancelBtn = document.querySelectorAll(".cancel-btn");
 	if (cancelBtn.length > 0) {
-		cancelBtn.forEach(btn => {
+		cancelBtn.forEach((btn) => {
 			btn.remove();
-		})
+		});
 	}
 }
 
@@ -203,9 +203,7 @@ function filterItems(e) {
 	console.log(text);
 
 	items.forEach((item) => {
-		if (
-			item.firstChild.textContent.toLowerCase().includes(text) === false
-		) {
+		if (item.firstChild.textContent.toLowerCase().includes(text) === false) {
 			item.style.display = "none";
 		} else {
 			item.style.display = "flex";
